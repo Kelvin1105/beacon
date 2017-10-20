@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout01"
+    android:layout_width="match_parent"
+    android:layout_height="70dip">
+
+    android:layout_width="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingBottom="10dip"
+    android:paddingLeft="10dip">
+
+
+    <CheckBox
+        android:id="@+id/MyAdapter_CheckBox_checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:focusable="false"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:orientation="vertical"
+        android:layout_alignBottom="@+id/name" />
+
+    <ImageView
+        android:id="@+id/pic"
+        android:layout_width="70dip"
+        android:layout_height="70dip"
+        android:orientation="vertical"
+        android:layout_alignBottom="@+id/macAddress">
+
+        ></ImageView>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:textSize="15dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/pic"
+        android:layout_toEndOf="@+id/pic"></TextView>
+
+    <TextView
+        android:id="@+id/macAddress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/pic"
+ />
+
+    <!--<TextView-->
+    <!--android:id="@+id/text2"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_toRightOf="@+id/pic"-->
+    <!--android:layout_below="@+id/name"-->
+
+    <!--&gt;</TextView>-->
+</RelativeLayout>
