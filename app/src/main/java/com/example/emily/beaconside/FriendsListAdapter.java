@@ -39,6 +39,8 @@ public class FriendsListAdapter extends BaseAdapter{
 
 
 
+
+
     public FriendsListAdapter(Context context, ArrayList<HashMap<String, Object>> itemList)
     {
         mChecked = new ArrayList<Boolean>();
@@ -85,6 +87,7 @@ public class FriendsListAdapter extends BaseAdapter{
         final int p = position;
         map.put(position, v);
         holder.selected.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 CheckBox cb = (CheckBox)v;

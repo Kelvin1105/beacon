@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,27 +11,30 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
 
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <!--使用者頭貼和資訊-->
         <ImageView
             android:id="@+id/userPicture"
-            android:layout_width="235dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
             app:srcCompat="@drawable/add" />
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp"
             android:paddingBottom="8dp"
             android:text="Hi"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -57,11 +61,10 @@
                 android:id="@+id/side_group_bt"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:background="@drawable/ic_action_group"
-                android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
-                />
+                android:layout_marginStart="40dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/ic_action_group" />
 
 
             <Button
@@ -128,31 +131,27 @@
                 android:orientation="vertical"
                 android:weightSum="1">
 
-                <ScrollView
-                    android:id="@+id/sv2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                <!--<ScrollView-->
+                <!--android:id="@+id/sv"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="match_parent">-->
 
-                    <include
-                        android:id="@+id/side_class_ls"
-                        layout="@layout/main_class_side"
-                        android:visibility="gone" />
-                </ScrollView>
+                <include
+                    android:id="@+id/side_group_ls"
+                    layout="@layout/main_group_side"
+                    android:visibility="visible" />
+                <!--</ScrollView>-->
 
-                <ScrollView
-                    android:id="@+id/sv"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                <!--<ScrollView-->
+                <!--android:id="@+id/sv2"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
-                    <!--<include-->
-                    <!--layout="@layout/main_class_side"-->
-                    <!--android:id="@+id/id2"-->
-                    <!--android:visibility="visible"/>-->
-                    <include
-                        android:id="@+id/side_group_ls"
-                        layout="@layout/main_group_side"
-                        android:visibility="visible" />
-                </ScrollView>
+                <include
+                    android:id="@+id/side_class_ls"
+                    layout="@layout/main_class_side"
+                    android:visibility="gone" />
+                <!--</ScrollView>-->
 
             </LinearLayout>
 

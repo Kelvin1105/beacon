@@ -51,6 +51,7 @@ public class ListAdapter extends BaseAdapter
         }
 
         CheckedTextView chkBshow = (CheckedTextView) vi.findViewById(R.id.check1);
+
         chkBshow.setText(mList.get(position).toString());
 
         return vi;

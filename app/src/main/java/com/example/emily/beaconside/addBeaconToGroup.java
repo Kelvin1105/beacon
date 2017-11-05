@@ -6,10 +6,14 @@ import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -32,10 +36,11 @@ public class addBeaconToGroup extends AppCompatActivity {
     public static String uEmail;
     public static String get_uEmail;
     private ListView List;
-    private BeaconToGroupAdapter adapter;
-    private Button confirm;
+    private BeaconCheckboxAdapter beaconCheckboxAdapter;
     ArrayList<String> listItemID = new ArrayList<String>();
     String macAddress,gId;
+    public TextView groupName;
+    String gName;
 
 
     ArrayList<String> bName_list = new ArrayList<String>();//我的beacon名稱list
@@ -48,11 +53,22 @@ public class addBeaconToGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_beacon_to_group);
-        confirm = (Button)findViewById(R.id.button8);
-        List = (ListView) findViewById(R.id.listView);
+
+        //畫面上方的bar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");//消除lable
+
+       List = (ListView) findViewById(R.id.listView_beacon);
+        groupName = (TextView) findViewById(R.id.groupName);
+
 
         Bundle extras = getIntent().getExtras();
         gId = extras.getString("gId");
+        gName = extras.getString("gName");
+        groupName.setText(gName);
+
 
         GraphRequest request = GraphRequest.newMeRequest(
                 accessToken,
@@ -89,37 +105,37 @@ public class addBeaconToGroup extends AppCompatActivity {
 
     }
 
-       //取得用戶擁有的beacon
-       private void getBeacon(){
-           class GetBeacon extends AsyncTask<Void,Void,String> {
-               ProgressDialog loading;
-               @Override
-               protected void onPreExecute() {
-                   super.onPreExecute();
+    //取得用戶擁有的beacon
+    private void getBeacon(){
+        class GetBeacon extends AsyncTask<Void,Void,String> {
+            ProgressDialog loading;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
 //                loading = ProgressDialog.show(MainActivity.this,"Fetching...","Wait...",false,false);
-               }
+            }
 
-               @Override
-               protected void onPostExecute(String s) {
-                   super.onPostExecute(s);
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
 //                loading.dismiss();
-                   JSON_STRING = s;
+                JSON_STRING = s;
 
-                   showMyBeacon();
-                   //將取得的json轉換為array list, 顯示在畫面上
+                showMyBeacon();
+                //將取得的json轉換為array list, 顯示在畫面上
 
-               }
+            }
 
-               @Override
-               protected String doInBackground(Void... params) {
-                   RequestHandler rh = new RequestHandler();
-                   String s = rh.sendGetRequestParam(Config.URL_GET_ALL_BEACON,get_uEmail);
-                   return s;
-               }
-           }
-           GetBeacon ge = new GetBeacon();
-           ge.execute();
-       }
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendGetRequestParam(Config.URL_GET_ALL_BEACON,get_uEmail);
+                return s;
+            }
+        }
+        GetBeacon ge = new GetBeacon();
+        ge.execute();
+    }
     private void showMyBeacon(){
         JSONObject jsonObject = null;
 
@@ -151,53 +167,16 @@ public class addBeaconToGroup extends AppCompatActivity {
 
             }
 
-            adapter = new BeaconToGroupAdapter(addBeaconToGroup.this,list);
+            beaconCheckboxAdapter = new BeaconCheckboxAdapter(addBeaconToGroup.this, list);
             List.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-            List.setAdapter(adapter);
+            List.setAdapter(beaconCheckboxAdapter);
+
 
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-        confirm.setOnClickListener(new View.OnClickListener() {
-            //          Toast.makeText(NewGroup.this,"On click",Toast.LENGTH_SHORT).show();
-            @Override
-            public void onClick(View v) {
-
-                listItemID.clear();
-                macAddress=null;
-                for(int i=0;i<adapter.mChecked.size();i++){
-                    if(adapter.mChecked.get(i)){
-                        listItemID.add((String) adapter.getItem(i));
-//                                friendId = friendId+","+adapter.getItem(i).toString();
-                    }
-                }
-                if(listItemID.size()==0){
-                    Toast.makeText( addBeaconToGroup.this,"select no data",Toast.LENGTH_SHORT).show();
-
-                }else{
-                    StringBuilder sb = new StringBuilder();
-
-                    for(int i=0;i<listItemID.size();i++){
-//                                sb.append(listItemID.get(i)+",");
-                        if (i==0)
-                            macAddress = listItemID.get(i).toString()+",";
-                        else {
-                            macAddress = macAddress + listItemID.get(i).toString()+",";
-                        }
-                    }
-                    macAddress = macAddress.substring(0,macAddress.length() - 1);
-                    Toast.makeText( addBeaconToGroup.this,macAddress,Toast.LENGTH_SHORT).show();
-
-                }
-                add();
-                finish();
-
-            }
-
-        });
     }
     private void add() {
 
@@ -240,4 +219,60 @@ public class addBeaconToGroup extends AppCompatActivity {
         Add ae = new Add();
         ae.execute();
     }
+
+    /* check button*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.new_item_save, menu);
+        //Toast.makeText(this,"叫出menu", Toast.LENGTH_SHORT).show();
+        return super.onCreateOptionsMenu(menu);
+        //return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_new_item_check) {
+            //執行新增group
+            listItemID.clear();
+            macAddress=null;
+            for(int i=0;i<beaconCheckboxAdapter.mChecked.size();i++){
+                if(beaconCheckboxAdapter.mChecked.get(i)){
+                    listItemID.add((String) beaconCheckboxAdapter.getItem(i));
+//                                friendId = friendId+","+adapter.getItem(i).toString();
+                }
+            }
+            if(listItemID.size()==0){
+                Toast.makeText( addBeaconToGroup.this,"select no data",Toast.LENGTH_SHORT).show();
+
+            }else{
+                StringBuilder sb = new StringBuilder();
+
+                for(int i=0;i<listItemID.size();i++){
+//                                sb.append(listItemID.get(i)+",");
+                    if (i==0)
+                        macAddress = listItemID.get(i).toString()+",";
+                    else {
+                        macAddress = macAddress + listItemID.get(i).toString()+",";
+                    }
+                }
+                macAddress = macAddress.substring(0,macAddress.length() - 1);
+                Toast.makeText( addBeaconToGroup.this,macAddress,Toast.LENGTH_SHORT).show();
+
+            }
+            add();
+            finish();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    /* check end */
 }
